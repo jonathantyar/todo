@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         Section::factory()
-            ->times(10)
+            ->times(15)
             ->hasTasks(3)
             ->create();
     }
