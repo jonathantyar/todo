@@ -28,4 +28,16 @@ class SectionTest extends TestCase
         //Should be able to get the section
         $response->assertStatus(200);
     }
+
+    public function testUserCanCreateSection()
+    {
+        //Send Section from Database
+        $section = Section::factory()->create();
+
+        //Try Accessing API
+        $response = $this->postJson('/api/sections',$section->toArray());
+
+        //Should be able to get the section with status 201 for new data
+        $response->assertStatus(201);
+    }
 }

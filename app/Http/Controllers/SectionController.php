@@ -17,4 +17,21 @@ class SectionController extends Controller
 
         return SectionResource::collection($section);
     }
+
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json(['error'=>$validator->messages()], 400);
+        }
+
+        $section = new Section;
+        $section->name = $request->name;
+        $section->save();
+
+        return new SectionResource($section);
+    }
 }
