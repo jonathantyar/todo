@@ -20,6 +20,7 @@ class TaskResource extends JsonResource
             'id' => $this->id,
             'section' => $this->section->name,
             'name' => $this->name,
+            'state' => $this->state,
             'created_at' => Carbon::parse($this->created_at)->diffForHumans(),
             'updated_at' => Carbon::parse($this->updated_at)->diffForHumans(),
         ];

@@ -16,6 +16,8 @@ use App\Http\Controllers\TaskController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::put('/tasks/update/state',[TaskController::class,'updateState']);
+
 Route::get('/sections/{id}/with-tasks',[SectionController::class,'showWithTasks']);
 
 Route::delete('/tasks/delete',[TaskController::class,'delete']);

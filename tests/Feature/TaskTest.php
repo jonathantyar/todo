@@ -63,4 +63,19 @@ class TaskTest extends TestCase
         //Should be able to get the section
         $response->assertStatus(200);
     }
+
+    public function testUserCanChangeTaskState()
+    {
+        //Seed Task to Database
+        $task    = Task::factory()->create();
+
+        //Try Accessing API
+        $response = $this->postJson('/api/tasks/update/state',[
+            '_method'    => 'put',
+            'id'         => $task->id,
+        ]);
+
+        //Should be able to get the section with status 200
+        $response->assertStatus(200);
+    }
 }
