@@ -48,4 +48,19 @@ class TaskTest extends TestCase
         //Should be able to get the section with status 200
         $response->assertStatus(200);
     }
+
+    public function testUserCanDeleteTask()
+    {
+        //Create Task From Database
+        $task = Task::factory()->create();
+
+        //Try Accessing API
+        $response = $this->postJson('/api/tasks/delete',[
+            '_method' => 'delete',
+            'id'      => $task->id,
+        ]);
+
+        //Should be able to get the section
+        $response->assertStatus(200);
+    }
 }
