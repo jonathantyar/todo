@@ -53,4 +53,20 @@ class SectionTest extends TestCase
         //Should be able to get the section
         $response->assertStatus(200);
     }
+
+    public function testUserCanUpdateASection()
+    {
+        //Create Section Database
+        $section = Section::factory()->create();
+
+        //Try Accessing API
+        $response = $this->postJson('/api/sections/update',[
+            '_method' => 'put',
+            'id'      => $section->id,
+            'name'    => 'ChangeSection',
+        ]);
+
+        //Should be able to get the section
+        $response->assertStatus(200);
+    }
 }

@@ -43,4 +43,25 @@ class SectionController extends Controller
 
         return response()->json(['error'=>'Record not found!'],404);
     }
+
+    public function update(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id'   => 'required',
+            'name' => 'required'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json(['error'=>$validator->messages()], 400);
+        }
+
+        if($section = Section::find($request->id)) {
+            $section->name = $request->name;
+            $section->save();
+
+            return new SectionResource($section);
+        }
+
+        return response()->json(['error'=>'Record not found!'],404);
+    }
 }
