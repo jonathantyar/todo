@@ -40,4 +40,17 @@ class SectionTest extends TestCase
         //Should be able to get the section with status 201 for new data
         $response->assertStatus(201);
     }
+
+    public function testUserCanShowASection()
+    {
+        //Get Section from Database
+        $section = Section::factory()->create();
+
+        //Try Accessing API
+        $api      = $this->json('get','/api/sections/1');
+        $response = $api;
+
+        //Should be able to get the section
+        $response->assertStatus(200);
+    }
 }

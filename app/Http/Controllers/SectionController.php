@@ -34,4 +34,13 @@ class SectionController extends Controller
 
         return new SectionResource($section);
     }
+
+    public function show($id)
+    {
+        if($section = Section::find($id)) {
+            return new SectionResource($section);
+        }
+
+        return response()->json(['error'=>'Record not found!'],404);
+    }
 }

@@ -16,5 +16,6 @@ use App\Http\Controllers\SectionController;
 |
 */
 
+Route::get('/sections/{id}',[SectionController::class,'show']);
 Route::post('/sections',[SectionController::class,'store']);
 Route::get('/sections',[SectionController::class,'index']);
