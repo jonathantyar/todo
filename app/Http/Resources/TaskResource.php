@@ -19,6 +19,7 @@ class TaskResource extends JsonResource
         return [
             'id' => $this->id,
             'section' => $this->section->name,
+            'section_id' => $this->section_id,
             'name' => $this->name,
             'state' => $this->state,
             'created_at' => Carbon::parse($this->created_at)->diffForHumans(),

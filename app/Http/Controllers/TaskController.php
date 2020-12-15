@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Section;
 use App\Models\Task;
 use App\Http\Resources\TaskResource;
+use App\Http\Resources\SectionWithTaskResource;
 
 use Validator;
 
@@ -100,9 +101,15 @@ class TaskController extends Controller
     {
         $availableState  = array('todo','done');
         if(in_array($state, $availableState)){
-            $task   = Task::where('state',$state)->orderBy('created_at','desc')->get();
+            $section = Section::whereHas('tasks',function($query) use($state){
+                $query->where('state',$state);
+                $query->orderBy('created_at','desc');
+            })->orderBy('created_at')->get();
+            // Supporting new feature The tasks must be chronologically displayed within a section, order by desc
+            // $task   = Task::where('state',$state)->orderBy('created_at','desc')->get();
 
-            return TaskResource::collection($task);
+            // return TaskResource::collection($task);
+            return SectionWithTaskResource::collection($section);
         }
 
         return response()->json(['error'=>'Not expected that kind of state! (todo or done)'],400);
@@ -118,8 +125,14 @@ class TaskController extends Controller
             return response()->json(['error'=>$validator->messages()], 400);
         }
 
-        $task   = Task::where('name','LIKE','%'.$request->search.'%')->orderBy('created_at','desc')->get();
+        $section = Section::whereHas('tasks',function($query) use($request){
+            $query->where('name','LIKE','%'.$request->search.'%');
+            $query->orderBy('created_at','desc');
+        })->orderBy('created_at')->get();
+        // Supporting new feature The tasks must be chronologically displayed within a section, order by desc
+        // $task   = Task::where('name','LIKE','%'.$request->search.'%')->orderBy('created_at','desc')->get();
 
-        return TaskResource::collection($task);
+        // return TaskResource::collection($task);
+        return SectionWithTaskResource::collection($section);
     }
 }
