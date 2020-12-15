@@ -95,4 +95,16 @@ class TaskController extends Controller
 
         return response()->json(['error'=>'Record not found!'],404);
     }
+
+    public function filterByState($state)
+    {
+        $availableState  = array('todo','done');
+        if(in_array($state, $availableState)){
+            $task   = Task::where('state',$state)->orderBy('created_at','desc')->get();
+
+            return TaskResource::collection($task);
+        }
+
+        return response()->json(['error'=>'Not expected that kind of state! (todo or done)'],400);
+    }
 }

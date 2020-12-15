@@ -78,4 +78,16 @@ class TaskTest extends TestCase
         //Should be able to get the section with status 200
         $response->assertStatus(200);
     }
+
+    public function testUserCanFilterTaskByState()
+    {
+        $state = $this->faker->randomElement(['done','todo']);
+
+        //Try Accessing API
+        $api      = $this->json('get','/api/tasks/state/'.$state);
+        $response = $api;
+
+        //Should be able to get the section
+        $response->assertStatus(200);
+    }
 }
