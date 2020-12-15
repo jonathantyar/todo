@@ -84,4 +84,17 @@ class SectionTest extends TestCase
         //Should be able to get the section
         $response->assertStatus(200);
     }
+
+    public function testUserCanShowASectionWithTasks()
+    {
+        //Get Section from Database
+        $section = Section::factory()->hasTasks(3)->create();
+
+        //Try Accessing API
+        $api      = $this->json('get','/api/sections/1/with-tasks');
+        $response = $api;
+
+        //Should be able to get the section
+        $response->assertStatus(200);
+    }
 }

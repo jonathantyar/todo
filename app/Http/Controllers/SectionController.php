@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Section;
 use App\Http\Resources\SectionResource;
+use App\Http\Resources\SectionWithTaskResource;
 
 use Validator;
 
@@ -79,6 +80,15 @@ class SectionController extends Controller
             $section->delete();
 
             return new SectionResource($section);
+        }
+
+        return response()->json(['error'=>'Record not found!'],404);
+    }
+
+    public function showWithTasks($id)
+    {
+        if($section = Section::with('tasks')->find($id)) {
+            return new SectionWithTaskResource($section);
         }
 
         return response()->json(['error'=>'Record not found!'],404);
