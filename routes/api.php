@@ -16,6 +16,8 @@ use App\Http\Controllers\TaskController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+//Show Task From Section
+Route::get('/sections/{section_id}/tasks/{task_id}',[TaskController::class,'showTaskFromSection']);
 //Search a task
 Route::post('/tasks/search',[TaskController::class,'search']);
 //Filter task by its state
@@ -28,6 +30,7 @@ Route::get('/sections/{id}/with-tasks',[SectionController::class,'showWithTasks'
 Route::delete('/tasks/delete',[TaskController::class,'delete']);
 Route::put('/tasks/update',[TaskController::class,'update']);
 Route::post('/tasks',[TaskController::class,'store']);
+Route::get('/tasks/{id}',[TaskController::class,'show']);
 //CRUD SECTION
 Route::delete('/sections/delete',[SectionController::class,'delete']);
 Route::put('/sections/update',[SectionController::class,'update']);

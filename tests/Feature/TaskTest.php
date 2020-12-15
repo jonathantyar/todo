@@ -104,4 +104,30 @@ class TaskTest extends TestCase
         //Should be able to get the taks
         $response->assertStatus(200);
     }
+
+    public function testUserCanShowTask()
+    {
+        //Get Section from Database
+        $task = Task::factory()->create();
+
+        //Try Accessing API
+        $api      = $this->json('get','/api/tasks/1');
+        $response = $api;
+
+        //Should be able to get the section
+        $response->assertStatus(200);
+    }
+
+    public function testUserCanShowTaskWithinSection()
+    {
+        //Get Section from Database
+        $task = Task::factory()->create();
+
+        //Try Accessing API
+        $api      = $this->json('get','/api/sections/1/tasks/1');
+        $response = $api;
+
+        //Should be able to get the section
+        $response->assertStatus(200);
+    }
 }

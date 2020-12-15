@@ -135,4 +135,26 @@ class TaskController extends Controller
         // return TaskResource::collection($task);
         return SectionWithTaskResource::collection($section);
     }
+
+    public function show($id)
+    {
+        if($task = Task::find($id)) {
+            return new TaskResource($task);
+        }
+
+        return response()->json(['error'=>'Record not found!'],404);
+    }
+
+    public function showTaskFromSection($section_id, $task_id)
+    {
+        if($task = Task::find($task_id)) {
+            if($task->section_id == $section_id){
+                return new TaskResource($task);
+            }
+
+            return response()->json(['error'=>'Record not found in this section!'],404);
+        }
+
+        return response()->json(['error'=>'Record not found!'],404);
+    }
 }
