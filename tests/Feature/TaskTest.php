@@ -32,4 +32,20 @@ class TaskTest extends TestCase
         //Should be able to get the section with status 201 for new data
         $response->assertStatus(201);
     }
+
+    public function testUserCanUpdateTask()
+    {
+        //Seed Task to Database
+        $task    = Task::factory()->create();
+
+        //Try Accessing API
+        $response = $this->postJson('/api/tasks/update',[
+            '_method'    => 'put',
+            'id'         => $task->id,
+            'name'       => $this->faker->realText(25,2),
+        ]);
+
+        //Should be able to get the section with status 200
+        $response->assertStatus(200);
+    }
 }
