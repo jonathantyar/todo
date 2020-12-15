@@ -10,11 +10,16 @@ use App\Http\Resources\SectionWithTaskResource;
 
 use Validator;
 
+use Illuminate\Support\Facades\Cache;
+
 class SectionController extends Controller
 {
     public function index()
     {
-        $section     = Section::orderBy('created_at','desc')->get();
+        // Store cache for 1 minutes if not exits
+        $section = Cache::remember('sections', 60, function () {
+            return Section::orderBy('created_at','desc')->get();
+        });
 
         return SectionResource::collection($section);
     }
@@ -32,6 +37,8 @@ class SectionController extends Controller
         $section = new Section;
         $section->name = $request->name;
         $section->save();
+
+        Cache::pull('sections');
 
         return new SectionResource($section);
     }
@@ -63,6 +70,8 @@ class SectionController extends Controller
             return new SectionResource($section);
         }
 
+        Cache::pull('sections');
+
         return response()->json(['error'=>'Record not found!'],404);
     }
 
@@ -81,6 +90,8 @@ class SectionController extends Controller
 
             return new SectionResource($section);
         }
+
+        Cache::pull('sections');
 
         return response()->json(['error'=>'Record not found!'],404);
     }

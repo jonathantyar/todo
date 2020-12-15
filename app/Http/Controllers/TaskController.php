@@ -11,6 +11,8 @@ use App\Http\Resources\SectionWithTaskResource;
 
 use Validator;
 
+use Illuminate\Support\Facades\Cache;
+
 class TaskController extends Controller
 {
     public function store(Request $request)
@@ -101,10 +103,13 @@ class TaskController extends Controller
     {
         $availableState  = array('todo','done');
         if(in_array($state, $availableState)){
-            $section = Section::whereHas('tasks',function($query) use($state){
-                $query->where('state',$state);
-                $query->orderBy('created_at','desc');
-            })->orderBy('created_at')->get();
+            // Store cache for 1 minutes if not exits
+            $section = Cache::remember('tasks-state-'.$state, 60, function () use($state) {
+                return Section::whereHas('tasks',function($query) use($state){
+                    $query->where('state',$state);
+                    $query->orderBy('created_at','desc');
+                })->orderBy('created_at')->get();
+            });
             // Supporting new feature The tasks must be chronologically displayed within a section, order by desc
             // $task   = Task::where('state',$state)->orderBy('created_at','desc')->get();
 
@@ -125,10 +130,15 @@ class TaskController extends Controller
             return response()->json(['error'=>$validator->messages()], 400);
         }
 
-        $section = Section::whereHas('tasks',function($query) use($request){
-            $query->where('name','LIKE','%'.$request->search.'%');
-            $query->orderBy('created_at','desc');
-        })->orderBy('created_at')->get();
+
+        // Store cache for 1 minutes if not exits
+        $section = Cache::remember('tasks-search-'.$request->search, 60, function () use($request) {
+            return Section::whereHas('tasks',function($query) use($request){
+                $query->where('name','LIKE','%'.$request->search.'%');
+                $query->orderBy('created_at','desc');
+            })->orderBy('created_at')->get();
+        });
+
         // Supporting new feature The tasks must be chronologically displayed within a section, order by desc
         // $task   = Task::where('name','LIKE','%'.$request->search.'%')->orderBy('created_at','desc')->get();
 
