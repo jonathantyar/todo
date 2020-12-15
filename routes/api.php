@@ -16,6 +16,7 @@ use App\Http\Controllers\SectionController;
 |
 */
 
+Route::delete('/sections/delete',[SectionController::class,'delete']);
 Route::put('/sections/update',[SectionController::class,'update']);
 Route::get('/sections/{id}',[SectionController::class,'show']);
 Route::post('/sections',[SectionController::class,'store']);

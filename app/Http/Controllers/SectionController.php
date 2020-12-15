@@ -64,4 +64,23 @@ class SectionController extends Controller
 
         return response()->json(['error'=>'Record not found!'],404);
     }
+
+    public function delete(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id'   => 'required',
+        ]);
+
+        if($validator->fails()) {
+            return response()->json(['error'=>$validator->messages()], 400);
+        }
+
+        if($section = Section::find($request->id)) {
+            $section->delete();
+
+            return new SectionResource($section);
+        }
+
+        return response()->json(['error'=>'Record not found!'],404);
+    }
 }

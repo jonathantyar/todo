@@ -69,4 +69,19 @@ class SectionTest extends TestCase
         //Should be able to get the section
         $response->assertStatus(200);
     }
+
+    public function testUserCanDeleteASection()
+    {
+        //Create Section Database
+        $section = Section::factory()->create();
+
+        //Try Accessing API
+        $response = $this->postJson('/api/sections/delete',[
+            '_method' => 'delete',
+            'id'      => $section->id,
+        ]);
+
+        //Should be able to get the section
+        $response->assertStatus(200);
+    }
 }
