@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Section;
+
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,6 +15,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        Section::factory()
+            ->times(10)
+            ->hasTasks(3)
+            ->create();
     }
 }
