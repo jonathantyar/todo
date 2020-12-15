@@ -87,7 +87,21 @@ class TaskTest extends TestCase
         $api      = $this->json('get','/api/tasks/state/'.$state);
         $response = $api;
 
-        //Should be able to get the section
+        //Should be able to get the task
+        $response->assertStatus(200);
+    }
+
+    public function testUserCanSearchTask()
+    {
+        //Send Section from Database
+        $section = Task::factory()->times(10)->create();
+
+        //Try Accessing API
+        $response = $this->postJson('/api/tasks/search',[
+            'search'       => $this->faker->realText(10,2),
+        ]);
+
+        //Should be able to get the taks
         $response->assertStatus(200);
     }
 }

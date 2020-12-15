@@ -107,4 +107,19 @@ class TaskController extends Controller
 
         return response()->json(['error'=>'Not expected that kind of state! (todo or done)'],400);
     }
+
+    public function search(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'search'         => 'required'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json(['error'=>$validator->messages()], 400);
+        }
+
+        $task   = Task::where('name','LIKE','%'.$request->search.'%')->orderBy('created_at','desc')->get();
+
+        return TaskResource::collection($task);
+    }
 }

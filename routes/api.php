@@ -16,6 +16,8 @@ use App\Http\Controllers\TaskController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+//Search a task
+Route::post('/tasks/search',[TaskController::class,'search']);
 //Filter task by its state
 Route::get('/tasks/state/{state}',[TaskController::class,'filterByState']);
 //Update State of tasks
